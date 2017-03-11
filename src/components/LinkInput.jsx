@@ -126,7 +126,11 @@ export default class LinkInput extends Component {
           </FormGroup>
           {this.renderLinkPreviews()}
         </form>
-        <Button onClick={this.getItems.bind(this)} className="btn btn-large btn-primary">Получить документ</Button>
+        <Button
+          onClick={this.getItems.bind(this)}
+          className="btn btn-large btn-primary"
+          disabled={!this.state.links.length}
+        >Получить документ</Button>
       </div>
     );
   }
