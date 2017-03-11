@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import config from '../config.json';
 import LinkInput from './components/LinkInput';
 
 class App extends Component {
@@ -24,3 +25,5 @@ class App extends Component {
 }
 
 export default App;
+export const endpoint = process.env.NODE_ENV === 'development' ?
+  config.endpointDev : config.endpointProd;

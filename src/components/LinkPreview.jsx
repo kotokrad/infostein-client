@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import { endpoint } from '../App';
 import './LinkPreview.css';
 
 export default class LinkPreview extends Component {
@@ -13,12 +14,13 @@ export default class LinkPreview extends Component {
   }
 
   componentWillMount() {
-    const url = 'https://lit-refuge-84110.herokuapp.com/items'
+    const url = `${endpoint}/items`;
     axios.post(url, {
       links: [this.props.link],
     }).then(res => {
       const item = res.data[0];
       this.setState({
+        status: item.status,
         title: item.title,
         date: item.date,
       });
@@ -27,10 +29,15 @@ export default class LinkPreview extends Component {
 
   renderInfo() {
     return (
-      <dt>
-        <b>{this.state.title}</b><br/>
-        <span className="small">{this.state.date}</span>
-      </dt>
+      this.state.status === 'ERROR' ?
+        <dt>
+          <b className="text-danger">Ошибка! Проверьте ссылку</b>
+        </dt>:
+        <dt>
+          <b className="text-primary">{this.state.title}</b>
+          <br/>
+          <span className="small">{this.state.date}</span>
+        </dt>
     );
   }
 

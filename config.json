@@ -1,0 +1,4 @@
+{
+  "endpointDev": "http://localhost:4000",
+  "endpointProd": "https://lit-refuge-84110.herokuapp.com"
+}

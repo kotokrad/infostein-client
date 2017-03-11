@@ -6,13 +6,15 @@ import JSZip from 'jszip';
 import JSZipUtils from 'jszip-utils';
 import FileSaver from 'file-saver';
 
+import { endpoint } from '../App';
 import LinkPreview from './LinkPreview';
 import './LinkInput.css';
+
 
 export default class LinkInput extends Component {
   constructor(props) {
     super(props);
-
+    console.log(process.env.NODE_ENV);
     this.state = {
       inputValue: '',
       links: [],
@@ -49,20 +51,24 @@ export default class LinkInput extends Component {
 
   getItems() {
     if (this.state.links.length) {
-      const url = 'https://lit-refuge-84110.herokuapp.com/items'
+      const url = `${endpoint}/items`;
       axios.post(url, {
         links: this.state.links,
       }).then(res => {
-        this.generateDocument(res.data);
-        this.setState({
-          links: [],
-        })
+        try {
+          this.generateDocument(res.data.filter(item => item.status === 'OK'));
+          this.setState({
+            links: [],
+          });
+        } catch (e) {
+          console.log(e);
+        }
       });
     }
   }
 
   generateDocument(items) {
-    const templateURL = 'https://lit-refuge-84110.herokuapp.com/template.docx';
+    const templateURL = `${endpoint}/template.docx`;
     JSZipUtils.getBinaryContent(templateURL, (error, content) => {
       if (error) {
         throw error;
