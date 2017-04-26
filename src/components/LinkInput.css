@@ -1,3 +1,18 @@
-.link-preview {
-  text-align: left;
+.link-input {
+  margin-bottom: 20px;
+}
+
+.link-input .form-group {
+  display: inline-block !important;
+  margin-bottom: 0;
+  vertical-align: middle;
+  width: 90%;
+}
+
+.link-input .input-group {
+  width: 100%;
+}
+
+.link-input .input-group-btn {
+  width: 40px !important;
 }

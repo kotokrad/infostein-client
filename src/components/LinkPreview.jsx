@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import classnames from 'classnames';
 
 import { endpoint } from '../App';
-import './LinkPreview.css';
 
 export default class LinkPreview extends Component {
   constructor(props) {
@@ -19,10 +19,12 @@ export default class LinkPreview extends Component {
       links: [this.props.link],
     }).then(res => {
       const item = res.data[0];
+      console.log(item);
       this.setState({
         status: item.status,
         title: item.title,
         date: item.date,
+        body: item.body,
       });
     });
   }
@@ -42,8 +44,18 @@ export default class LinkPreview extends Component {
   }
 
   render() {
+    const previewClassName = classnames({
+      'preview': true,
+      'active': this.props.isActive,
+    });
     return (
-      <dl className="link-preview">
+      <dl
+        className={previewClassName}
+        onClick={() => this.props.onPreviewClick({
+          name: this.props.name,
+          text: this.state.body,
+        })}
+      >
         {this.renderInfo()}
         <dd>{this.props.link}</dd>
       </dl>

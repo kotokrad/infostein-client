@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
-import { FormGroup, FormControl, Button } from 'react-bootstrap';
+import {
+  Form,
+  FormGroup,
+  FormControl,
+  Button,
+  InputGroup,
+  Glyphicon
+} from 'react-bootstrap';
 import axios from 'axios';
+import classnames from 'classnames';
 import Docxtemplater from 'docxtemplater';
 import JSZip from 'jszip';
 import JSZipUtils from 'jszip-utils';
 import FileSaver from 'file-saver';
 
 import { endpoint } from '../App';
-import LinkPreview from './LinkPreview';
+import LinkPreviewList from './LinkPreviewList';
 import './LinkInput.css';
 
 
@@ -20,7 +28,7 @@ export default class LinkInput extends Component {
       links: [],
       hosts: [
         'sigmatv.com.ua',
-        'mariupolskoe.tv',
+        'www.mariupolskoe.tv',
       ],
     };
   }
@@ -34,7 +42,10 @@ export default class LinkInput extends Component {
   addLink(e) {
     e.preventDefault();
     const links = this.state.links;
-    const link = this.state.inputValue;
+    let link = this.state.inputValue;
+    if (link[link.length - 1] === '/') {
+      link = link.substr(0, link.length - 1)
+    }
     const parser = document.createElement('a');
     const local = document.createElement('a');
     parser.href = this.state.inputValue;
@@ -109,34 +120,49 @@ export default class LinkInput extends Component {
     }
   }
 
-  renderLinkPreviews() {
-    return this.state.links.map((link, i) => (
-      <LinkPreview key={link.substr(link.lastIndexOf('/'))} link={link} />
-    ));
-  }
-
   render() {
+    const buttonClassNames = classnames(
+      'btn',
+      { 'btn-success': !!this.getValidationState() }
+    );
     return (
-      <div className="link-input col-md-6 col-md-offset-3">
-        <form onSubmit={this.addLink.bind(this)}>
+      <div>
+        <Form
+          inline
+          className="link-input col-md-6 col-md-offset-3"
+          onSubmit={this.addLink.bind(this)}
+        >
           <FormGroup role="form" validationState={this.getValidationState()}>
-            <FormControl
-              onChange={this.handleInputChange.bind(this)}
-              value={this.state.inputValue}
-              type="text"
-              className="form-control"
-              placeholder="Добавьте ссылку и нажмите Enter"
-              autoFocus
-            ></FormControl>
-            <FormControl.Feedback />
+            <InputGroup>
+              <FormControl
+                onChange={this.handleInputChange.bind(this)}
+                value={this.state.inputValue}
+                type="text"
+                placeholder="Добавьте ссылку и нажмите Enter"
+                autoFocus
+              ></FormControl>
+              <InputGroup.Button>
+                <Button
+                  type="submit"
+                  className={buttonClassNames}
+                  disabled={!this.getValidationState()}
+                >
+                  <Glyphicon glyph="plus" />
+                </Button>
+              </InputGroup.Button>
+            </InputGroup>
+            {/* <FormControl.Feedback /> */}
           </FormGroup>
-          {this.renderLinkPreviews()}
-        </form>
-        <Button
-          onClick={this.getItems.bind(this)}
-          className="btn btn-large btn-primary"
-          disabled={!this.state.links.length}
-        >Получить документ</Button>
+          {' '}
+          <Button
+            onClick={this.getItems.bind(this)}
+            className="btn-download btn btn-primary"
+            disabled={!this.state.links.length}
+            ><Glyphicon glyph="save"/>
+            {/* Получить документ */}
+          </Button>
+        </Form>
+        <LinkPreviewList links={this.state.links} />
       </div>
     );
   }
