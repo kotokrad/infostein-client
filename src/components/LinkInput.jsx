@@ -5,7 +5,9 @@ import {
   FormControl,
   Button,
   InputGroup,
-  Glyphicon
+  Glyphicon,
+  OverlayTrigger,
+  Tooltip
 } from 'react-bootstrap';
 import axios from 'axios';
 import classnames from 'classnames';
@@ -121,9 +123,12 @@ export default class LinkInput extends Component {
   }
 
   render() {
-    const buttonClassNames = classnames(
+    const buttonClassName = classnames(
       'btn',
       { 'btn-success': !!this.getValidationState() }
+    );
+    const tooltip = (
+      <Tooltip id="tooltip">Получить документ</Tooltip>
     );
     return (
       <div>
@@ -144,7 +149,7 @@ export default class LinkInput extends Component {
               <InputGroup.Button>
                 <Button
                   type="submit"
-                  className={buttonClassNames}
+                  className={buttonClassName}
                   disabled={!this.getValidationState()}
                 >
                   <Glyphicon glyph="plus" />
@@ -154,13 +159,14 @@ export default class LinkInput extends Component {
             {/* <FormControl.Feedback /> */}
           </FormGroup>
           {' '}
-          <Button
-            onClick={this.getItems.bind(this)}
-            className="btn-download btn btn-primary"
-            disabled={!this.state.links.length}
-            ><Glyphicon glyph="save"/>
-            {/* Получить документ */}
-          </Button>
+          <OverlayTrigger rootClose="true" placement="right" overlay={tooltip}>
+            <Button
+              onClick={this.getItems.bind(this)}
+              className="btn-download btn btn-primary"
+              disabled={!this.state.links.length}
+              ><Glyphicon glyph="save"/>
+            </Button>
+          </OverlayTrigger>
         </Form>
         <LinkPreviewList links={this.state.links} />
       </div>
