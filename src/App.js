@@ -14,10 +14,24 @@ class App extends Component {
           <h2>Welcome to React</h2>
         </div>
         <div className="container">
-          <p className="App-intro">
-            To get started, edit <code>src/App.js</code> and save to reload.
-          </p>
           <LinkInput />
+          <div className="App-description col-md-8 col-md-offset-2">
+            <p>
+              Приложение разрабатывается для личного использования и автоматизации работы.
+              Основная задача и возможность - парсинг сайтов с новостными сюжетами и генерация docx документа с полученными данными, приведёнными к единому стандарту включая исправление типичных ошибок и изменение структуры текста (распарсить и собрать из кусочков).
+              Присутствует предпросмотр текста сюжета (клик на превью документа).<br />
+              <br />
+              При добавлении валидной ссылки на превью появляется заголовок и дата сюжета. Произойти это может не сразу, т.к. серверу heroku требуется несколько секунд, чтобы проснуться.<br />
+              <br />
+              На данный момент поддерживаются два сайта. Ссылки для теста:<br />
+            </p>
+            <ul>
+              <li>http://www.mariupolskoe.tv/news/news-story/rabota-kontaktno-kommunikatsionnogo-tsentra-2/</li>
+              <li>http://www.mariupolskoe.tv/news/news-story/v-mariupole-poyavilas-alleya-sakury/</li>
+              <li>http://sigmatv.com.ua/news/view/20027</li>
+              <li>http://sigmatv.com.ua/news/view/21011</li>
+            </ul>
+          </div>
         </div>
       </div>
     );
